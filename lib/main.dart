@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'screens/register.dart';
 
 void main() {
   runApp(App());
@@ -56,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 new Expanded(
                   child: Container(
-                    child: signUpButton(),
+                    child: signUpButton(context),
                   ),
                 )
               ],
@@ -108,17 +110,24 @@ Widget signInButton() {
       'SignIn',
       style: TextStyle(color: Colors.white),
     ),
-    onPressed: () {},
+    onPressed: () {
+      print('You Click SignIn');
+    },
   );
 }
 
-Widget signUpButton() {
+Widget signUpButton(BuildContext context) {
   return RaisedButton(
     color: Colors.blue[300],
     child: Text(
-      'SignUp123',
+      'SignUp',
       style: TextStyle(color: Colors.white),
     ),
-    onPressed: () {},
+    onPressed: () {
+      print('You Click SignUp');
+      var myRounte =
+          new MaterialPageRoute(builder: (BuildContext context) => Register(),);
+          Navigator.of(context).push(myRounte);
+    },
   );
 }
