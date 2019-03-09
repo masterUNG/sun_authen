@@ -14,8 +14,52 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
+        actions: <Widget>[
+          IconButton(
+            tooltip: 'Upload To Server',
+            icon: Icon(Icons.cloud_upload),
+            onPressed: () {
+              print('You Click Upload');
+            },
+          )
+        ],
       ),
-      body: Text('This is Body Register'),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(left: 50.0, right: 50.0, top: 50.0),
+            child: nameTextField(),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 50.0, right: 50.0),
+            child: emailTextField(),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 50.0, right: 50.0),
+            child: passwordTextField(),
+          )
+        ],
+      ),
     );
   }
+}
+
+Widget nameTextField() {
+  return TextFormField(
+    decoration: InputDecoration(labelText: 'Name:', hintText: 'Name Only'),
+  );
+}
+
+Widget emailTextField() {
+  return TextFormField(
+    decoration:
+        InputDecoration(labelText: 'Email Address:', hintText: 'you@abc.com'),
+  );
+}
+
+Widget passwordTextField() {
+  return TextFormField(
+    decoration:
+        InputDecoration(labelText: 'Password:', hintText: 'more 5 Charactor'),
+  );
 }
