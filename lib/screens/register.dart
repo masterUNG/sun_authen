@@ -9,44 +9,60 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Register'),
-        actions: <Widget>[
-          IconButton(
-            tooltip: 'Upload To Server',
-            icon: Icon(Icons.cloud_upload),
-            onPressed: () {
-              print('You Click Upload');
-            },
-          )
-        ],
-      ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(left: 50.0, right: 50.0, top: 50.0),
-            child: nameTextField(),
+        appBar: AppBar(
+          title: Text('Register'),
+          actions: <Widget>[
+            IconButton(
+              tooltip: 'Upload To Server',
+              icon: Icon(Icons.cloud_upload),
+              onPressed: () {
+                uploadToServer();
+              },
+            )
+          ],
+        ),
+        body: Form(
+          key: formKey,
+          child: ListView(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(left: 50.0, right: 50.0, top: 50.0),
+                child: nameTextField(),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 50.0, right: 50.0),
+                child: emailTextField(),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 50.0, right: 50.0),
+                child: passwordTextField(),
+              )
+            ],
           ),
-          Container(
-            margin: EdgeInsets.only(left: 50.0, right: 50.0),
-            child: emailTextField(),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 50.0, right: 50.0),
-            child: passwordTextField(),
-          )
-        ],
-      ),
-    );
+        ));
   }
-}
+
+  void uploadToServer() {
+    print('You Click Upload');
+    // formKey.currentState.reset();
+    print(formKey.currentState.validate());
+
+  }
+} // _RegisterState Class
 
 Widget nameTextField() {
   return TextFormField(
     decoration: InputDecoration(labelText: 'Name:', hintText: 'Name Only'),
+    validator: (String value) {
+      if (value.length == 0) {
+        return 'Name not Blank ?';
+      }
+    },
   );
 }
 
