@@ -150,7 +150,17 @@ class _HomePageState extends State<HomePage> {
     var result =json.decode(response.body);
     print('result ==> $result');
 
+    if (result.toString() == 'null') {
+      
+    } else {
 
+    }
+
+
+  }
+
+  void showSnackBar(String messageString) {
+    
   }
 
   Widget signUpButton(BuildContext context) {
