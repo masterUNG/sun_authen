@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'screens/register.dart';
+import 'package:http/http.dart' show get;
+import 'dart:convert';
 
 void main() {
   runApp(App());
@@ -26,6 +27,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final formKey = GlobalKey<FormState>();
+  String emailString, passwordString;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 new Expanded(
                   child: Container(
-                    child: signInButton(),
+                    child: signInButton(context),
                   ),
                 ),
                 new Expanded(
@@ -100,6 +102,8 @@ class _HomePageState extends State<HomePage> {
         if (!value.contains('@')) {
           return 'False Email Format';
         }
+      },onSaved: (String value){
+        emailString =value;
       },
     );
   }
@@ -113,11 +117,13 @@ class _HomePageState extends State<HomePage> {
         if (value.length <= 5) {
           return 'Password must more 5 Charator';
         }
+      },onSaved: (String value) {
+        passwordString =value;
       },
     );
   }
 
-  Widget signInButton() {
+  Widget signInButton(BuildContext context) {
     return RaisedButton(
       color: Colors.blue[400],
       child: Text(
@@ -126,9 +132,25 @@ class _HomePageState extends State<HomePage> {
       ),
       onPressed: () {
         print('You Click SignIn');
-        print(formKey.currentState.validate());
+        // print(formKey.currentState.validate());
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          checkEmailAndPass(context, emailString, passwordString);
+        }
       },
     );
+  }
+
+  void checkEmailAndPass(BuildContext context, String email, String password) async {
+    print('email ==> $email, password ==> $password');
+
+    String urlString = 'https://www.androidthai.in.th/sun/getUserWhereUserMaster.php?isAdd=true&User=$email';
+
+    var response =await get(urlString);
+    var result =json.decode(response.body);
+    print('result ==> $result');
+
+
   }
 
   Widget signUpButton(BuildContext context) {
