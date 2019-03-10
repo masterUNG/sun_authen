@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' show get;
+import 'dart:convert';
+import '../main.dart';
 
 class Register extends StatefulWidget {
   final Widget child;
@@ -55,51 +58,70 @@ class _RegisterState extends State<Register> {
     // formKey.currentState.reset();
     print(formKey.currentState.validate());
     formKey.currentState.save();
-    print('Name = $nameString, email = $emailString, password = $passwordString');
+    print(
+        'Name = $nameString, email = $emailString, password = $passwordString');
+        sentNewUserToServer(context ,nameString, emailString, passwordString);
   }
 
+  void sentNewUserToServer(BuildContext context,
+      String userName, String userEmail, String userPassword) async {
+
+        String url = 'https://www.androidthai.in.th/sun/addUserMaster.php?isAdd=true&Name=$userName&User=$userEmail&Password=$userPassword';
+
+        var response = await get(url);
+        var result = json.decode(response.body);
+        print('result ==> $result');
+
+        if (result.toString() == 'true') {
+          
+          print('Back Process');
+          Navigator.pop(context);
+        
+        } 
+
+      }
+
   Widget nameTextField() {
-  return TextFormField(
-    decoration: InputDecoration(labelText: 'Name:', hintText: 'Name Only'),
-    validator: (String value) {
-      if (value.length == 0) {
-        return 'Name not Blank ?';
-      }
-    },onSaved: (String name){
-      nameString =name;
-    },
-  );
-}
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Name:', hintText: 'Name Only'),
+      validator: (String value) {
+        if (value.length == 0) {
+          return 'Name not Blank ?';
+        }
+      },
+      onSaved: (String name) {
+        nameString = name;
+      },
+    );
+  }
 
-Widget emailTextField() {
-  return TextFormField(
-    decoration:
-        InputDecoration(labelText: 'Email Address:', hintText: 'you@abc.com'),
-    validator: (String email) {
-      if (!email.contains('@')) {
-        return 'Please Fill Email Format';
-      }
-    },onSaved: (String email){
-      emailString =email;
-    },
-  );
-}
+  Widget emailTextField() {
+    return TextFormField(
+      decoration:
+          InputDecoration(labelText: 'Email Address:', hintText: 'you@abc.com'),
+      validator: (String email) {
+        if (!email.contains('@')) {
+          return 'Please Fill Email Format';
+        }
+      },
+      onSaved: (String email) {
+        emailString = email;
+      },
+    );
+  }
 
-Widget passwordTextField() {
-  return TextFormField(
-    decoration:
-        InputDecoration(labelText: 'Password:', hintText: 'more 5 Charactor'),
-    validator: (String password) {
-      if (password.length <= 5) {
-        return 'Password must more 5 Charator';
-      }
-    },onSaved: (String password){
-      passwordString =password;
-    },
-  );
-}
-
-
-
+  Widget passwordTextField() {
+    return TextFormField(
+      decoration:
+          InputDecoration(labelText: 'Password:', hintText: 'more 5 Charactor'),
+      validator: (String password) {
+        if (password.length <= 5) {
+          return 'Password must more 5 Charator';
+        }
+      },
+      onSaved: (String password) {
+        passwordString = password;
+      },
+    );
+  }
 } // _RegisterState Class
-
