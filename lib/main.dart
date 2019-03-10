@@ -3,6 +3,7 @@ import 'screens/register.dart';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
 import './models/json_model.dart';
+import './screens/service.dart';
 
 void main() {
   runApp(App());
@@ -161,25 +162,28 @@ class _HomePageState extends State<HomePage> {
     if (result.toString() == 'null') {
       showSnackBar('User False');
     } else {
-
       for (var data in result) {
         print('data ==> $data');
-        var jsonModel =JsonModel.fromJson(data);
+        var jsonModel = JsonModel.fromJson(data);
 
-        truePassword =jsonModel.password.toString();
-        nameString =jsonModel.name.toString();
-        idString =jsonModel.id.toString();
+        truePassword = jsonModel.password.toString();
+        nameString = jsonModel.name.toString();
+        idString = jsonModel.id.toString();
 
-        print('id ==> $idString, nameString ==> $nameString, truePassword ==> $truePassword');
-
+        print(
+            'id ==> $idString, nameString ==> $nameString, truePassword ==> $truePassword');
       }
 
-      if (passwordString ==truePassword) {
+      if (passwordString == truePassword) {
         showSnackBar('Welcome $nameString');
+
+        var serviceRoute =
+            new MaterialPageRoute(builder: (BuildContext context) => Service(nameLoginString: nameString,));
+            Navigator.of(context).push(serviceRoute);
+
       } else {
         showSnackBar('Password False Please Try again');
       }
-
     } // if
   }
 
