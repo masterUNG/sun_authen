@@ -27,52 +27,55 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final formKey = GlobalKey<FormState>();
+  final _scaffold = GlobalKey<ScaffoldState>();
+
   String emailString, passwordString;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffold,
         body: Form(
-      key: formKey,
-      child: ListView(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.only(top: 50.0),
-            child: logoShow(),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: titleApp(),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 50.0, right: 50.0),
-            child: emailTextField(),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 50.0, right: 50.0, bottom: 15.0),
-            child: passwordTextField(),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 50, right: 50),
-            child: Row(
-              children: <Widget>[
-                new Expanded(
-                  child: Container(
-                    child: signInButton(context),
-                  ),
+          key: formKey,
+          child: ListView(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(top: 50.0),
+                child: logoShow(),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: titleApp(),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 50.0, right: 50.0),
+                child: emailTextField(),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 50.0, right: 50.0, bottom: 15.0),
+                child: passwordTextField(),
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 50, right: 50),
+                child: Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: Container(
+                        child: signInButton(context),
+                      ),
+                    ),
+                    new Expanded(
+                      child: Container(
+                        child: signUpButton(context),
+                      ),
+                    )
+                  ],
                 ),
-                new Expanded(
-                  child: Container(
-                    child: signUpButton(context),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    ));
+              )
+            ],
+          ),
+        ));
   }
 
   Widget testText() {
@@ -102,8 +105,9 @@ class _HomePageState extends State<HomePage> {
         if (!value.contains('@')) {
           return 'False Email Format';
         }
-      },onSaved: (String value){
-        emailString =value;
+      },
+      onSaved: (String value) {
+        emailString = value;
       },
     );
   }
@@ -117,8 +121,9 @@ class _HomePageState extends State<HomePage> {
         if (value.length <= 5) {
           return 'Password must more 5 Charator';
         }
-      },onSaved: (String value) {
-        passwordString =value;
+      },
+      onSaved: (String value) {
+        passwordString = value;
       },
     );
   }
@@ -141,26 +146,37 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void checkEmailAndPass(BuildContext context, String email, String password) async {
+  void checkEmailAndPass(
+      BuildContext context, String email, String password) async {
     print('email ==> $email, password ==> $password');
 
-    String urlString = 'https://www.androidthai.in.th/sun/getUserWhereUserMaster.php?isAdd=true&User=$email';
+    String urlString =
+        'https://www.androidthai.in.th/sun/getUserWhereUserMaster.php?isAdd=true&User=$email';
 
-    var response =await get(urlString);
-    var result =json.decode(response.body);
+    var response = await get(urlString);
+    var result = json.decode(response.body);
     print('result ==> $result');
 
     if (result.toString() == 'null') {
-      
+      showSnackBar('User False');
     } else {
-
+      
     }
-
-
   }
 
   void showSnackBar(String messageString) {
-    
+    final snackBar = new SnackBar(
+      content: Text(messageString),
+      backgroundColor: Colors.orange,
+      duration: new Duration(seconds: 8),
+      action: new SnackBarAction(
+        label: 'Please Click',
+        onPressed: () {
+          print('You Click SnackBar');
+        },
+      ),
+    );
+    _scaffold.currentState.showSnackBar(snackBar);
   }
 
   Widget signUpButton(BuildContext context) {
