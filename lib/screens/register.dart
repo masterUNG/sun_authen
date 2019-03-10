@@ -57,10 +57,12 @@ class _RegisterState extends State<Register> {
     print('You Click Upload');
     // formKey.currentState.reset();
     print(formKey.currentState.validate());
-    formKey.currentState.save();
+    if (formKey.currentState.validate()) {
+      formKey.currentState.save();
     print(
         'Name = $nameString, email = $emailString, password = $passwordString');
         sentNewUserToServer(context ,nameString, emailString, passwordString);
+    }
   }
 
   void sentNewUserToServer(BuildContext context,
